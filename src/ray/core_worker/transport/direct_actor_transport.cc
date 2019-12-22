@@ -186,6 +186,9 @@ void CoreWorkerDirectTaskReceiver::HandlePushTask(
   RAY_CHECK(waiter_ != nullptr) << "Must call init() prior to use";
   const TaskSpecification task_spec(request.task_spec());
   RAY_LOG(DEBUG) << "Received task " << task_spec.DebugString();
+  RAY_LOG(WARNING) << "YYY before for loop";
+  if (task_spec.IsActorCreationTask()) {
+  RAY_LOG(WARNING) << "YYY in handlePushTask ActorCreationId " << task_spec.ActorCreationId() << "; CallerAddr " << task_spec.GetMessage().caller_address().port();}
   if (task_spec.IsActorTask() && !worker_context_.CurrentTaskIsDirectCall()) {
     send_reply_callback(Status::Invalid("This actor doesn't accept direct calls."),
                         nullptr, nullptr);
@@ -280,8 +283,10 @@ void CoreWorkerDirectTaskReceiver::HandlePushTask(
 
   // Run actor creation task immediately on the main thread, without going
   // through a scheduling queue.
+  RAY_LOG(WARNING) << "YYZ";
   if (task_spec.IsActorCreationTask()) {
     accept_callback();
+    RAY_LOG(WARNING) << "YYY ActorCreationId " << task_spec.ActorCreationId() << "; CallerAddr " << task_spec.GetMessage().caller_address().port();
     return;
   }
 

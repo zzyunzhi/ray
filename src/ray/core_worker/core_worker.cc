@@ -87,6 +87,7 @@ CoreWorker::CoreWorker(const WorkerType worker_type, const Language language,
       task_execution_callback_(task_execution_callback),
       resource_ids_(new ResourceMappingType()),
       grpc_service_(io_service_, *this) {
+  RAY_LOG(WARNING) << "YYX test log in constructor";
   // Initialize logging if log_dir is passed. Otherwise, it must be initialized
   // and cleaned up by the caller.
   if (log_dir_ != "") {
@@ -849,6 +850,7 @@ Status CoreWorker::ExecuteTask(const TaskSpecification &task_spec,
   Status status;
   TaskType task_type = TaskType::NORMAL_TASK;
   if (task_spec.IsActorCreationTask()) {
+    RAY_LOG(WARNING) << "YYY " << task_spec.ActorCreationId() << "; CallerAddr " << task_spec.GetMessage().caller_address().port();
     RAY_CHECK(return_ids.size() > 0);
     return_ids.pop_back();
     task_type = TaskType::ACTOR_CREATION_TASK;

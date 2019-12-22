@@ -2428,6 +2428,7 @@ void NodeManager::FinishAssignedActorTask(Worker &worker, const Task &task) {
   if (task_spec.IsActorCreationTask()) {
     // This was an actor creation task. Convert the worker to an actor.
     worker.AssignActorId(actor_id);
+    RAY_LOG(WARNING) << "XXX" << actor_id.Binary();
 
     if (task_spec.IsDetachedActor()) {
       worker.MarkDetachedActor();
@@ -2977,6 +2978,13 @@ void NodeManager::HandleNodeStatsRequest(const rpc::NodeStatsRequest &request,
   for (const auto &worker : worker_pool_.GetAllWorkers()) {
     auto worker_stats = reply->add_workers_stats();
     worker_stats->set_pid(worker->Pid());
+    worker_stats->set_actor_id(worker->GetActorId().Binary());
+    auto it = actor_registry_.find(worker->GetActorId());
+
+    if (it != actor_registry_.end()) {
+      // worker_stats->set_parent_actor_id(it->second.GetTableData().parent_id());
+    }
+    worker_stats->set_parent_actor_id("test"); 
     worker_stats->set_is_driver(false);
   }
   for (const auto &driver : worker_pool_.GetAllDrivers()) {

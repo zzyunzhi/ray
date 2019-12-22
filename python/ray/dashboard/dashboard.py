@@ -389,6 +389,7 @@ class RayletStats(threading.Thread):
                 node_id = node["NodeID"]
                 stub = self.stubs[node_id]
                 reply = stub.GetNodeStats(node_manager_pb2.NodeStatsRequest())
+                print("XXX reply: ", reply)
                 replies[node["NodeManagerAddress"]] = reply
             with self._raylet_stats_lock:
                 for address, reply in replies.items():

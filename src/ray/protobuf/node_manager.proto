@@ -53,6 +53,10 @@ message WorkerStats {
   uint32 pid = 1;
   // Whether this is a driver.
   bool is_driver = 2;
+  // Actor id of the worker process. 
+  bytes actor_id = 3;
+  // Parent actor id of the worker process. 
+  bytes parent_actor_id = 4;
 }
 
 message ViewData {
